@@ -13,6 +13,8 @@ Supports features like: N, P, K values Temperature, Humidity Soil type, Season, 
 
 💰 No External APIs Used No OpenAI, Google APIs, or paid third-party services used. Entire chatbot and prediction system work on local/internal logic. Reduces cost, improves speed, and allows offline readiness for rural deployments.
 
+<img width="433" height="727" alt="Screenshot 2025-09-16 205400" src="https://github.com/user-attachments/assets/cc40aac5-a6bc-4995-8775-aa28ed75d5d8" />
+
 🧩 Modular Code Structure app.py → Main Flask app utils/chatbot_logic.py → Chatbot logic model/ → Trained .pkl model files templates/ → HTML templates static/ → CSS, JS, assets
 
 🧪 Fully Functional Prototype Judges in evaluation sessions spent 3x more time on this project (30 min instead of 10 min). Received strong positive feedback and suggestions. Already suitable for integration into mobile apps/web apps for real-world usage.
