@@ -1,0 +1,61 @@
+Category,Name,Use
+Greeting,hello,👋 Hello! I'm AgriAssist — your farming buddy.
+Greeting,hi,Hi there! 🌱 How’s farming going today?
+Greeting,hey,Hey! 👋 Ready to talk about farming?
+Greeting,wassup,"Just chilling in the fields 🌾, what about you?"
+Greeting,who are you,"I'm AgriAssist, your smart farming assistant 🤖🌱."
+Greeting,AgriAssist,Yes it's me! Em kavali chepu ra babu
+Greeting,how are you,I'm great! Always ready to help farmers like you.
+Greeting,what's your name,My name is AgriAssist — nice to meet you!
+Greeting,em ra babu,"😂 Nenu AgriAssist babu, neeku help cheyyadaniki vachanu!"
+Greeting,what a slow bot,😂 Evaru Mama slow!!! Nak data leka koncham slow unna lekapothe rocket la unta!
+Greeting,joke chepu ra babu,"😂 Em jokes ra nayna pooye chadhuvko!!"
+Motivation,hard work,Hard work today brings a good harvest tomorrow.
+Motivation,farming quote,Farming is the backbone of every nation.
+Motivation,success,"Success in farming comes from patience, knowledge, and care."
+Motivation,faith,"Plant with faith, water with hope, and harvest with love."
+General,organic farming,Organic farming avoids chemicals and uses natural fertilizers like compost and manure.
+General,best season for rice,Rice grows best in Kharif season (June–November) with high rainfall.
+General,best season for wheat,Wheat grows in Rabi season (October–March) in cooler climates.
+General,best season for tomato,Tomatoes grow well in summer and need well-drained soil with moderate watering.
+General,fertilizer for yield,"Use NPK (Nitrogen, Phosphorus, Potassium) mix to improve yield."
+General,crop rotation,Rotating crops improves soil fertility and reduces pest attack.
+General,intercropping,Planting marigold with tomato helps repel pests naturally.
+Weather,rain,Too much rain causes waterlogging — use proper drainage systems.
+Weather,summer,"In summer, drip irrigation saves water and boosts yield."
+Weather,winter,Wheat and mustard thrive well in winter season with cooler temperatures.
+Weather,monsoon,Rice and sugarcane are well suited for monsoon season.
+Fun,joke,Why did the scarecrow win an award? Because he was outstanding in his field 😆.
+Fun,fun fact,"Bananas are technically berries, but strawberries are not! 🍓🍌"
+Fun,meme,Farmer + AI = Smart Farming 🚜🤖
+Fertilizer,Nitrogen (N),Promotes leafy growth and improves yield.
+Fertilizer,Phosphorus (P),Strengthens roots and helps in flowering.
+Fertilizer,Potassium (K),Improves disease resistance and fruit quality.
+Fertilizer,Urea,High source of nitrogen for fast growth.
+Fertilizer,DAP,Good source of phosphorus and nitrogen.
+Fertilizer,MOP,Provides potassium for crop strength.
+Irrigation,Drip irrigation,Saves water and increases productivity.
+Irrigation,Sprinkler irrigation,"Uniform water distribution, suitable for light soils."
+Crop,Maize,"Grows well in well-drained loamy soil with warm weather (21–27°C)."
+Crop,Sugarcane,"Needs fertile alluvial soil, hot and humid climate, and plenty of water (25–35°C)."
+Crop,Cotton,"Prefers black soil, requires warm climate (21–30°C) and moderate rainfall."
+Crop,Soybean,"Grows in loamy or clayey soil; ideal temperature is 20–30°C."
+Crop,Barley.,"Prefers cool climates and well-drained sandy loam soil (12–15°C)."
+Crop,Groundnut,"Sandy loam soil with good drainage; needs 25–30°C temperature."
+Crop,Bajra (Pearl Millet),"Thrives in dry regions, sandy loam soil; temperature 25–35°C."
+Crop,Jowar (Sorghum),"Grows in sandy to loamy soil, hot and dry weather is suitable (25–32°C)."
+Crop,Mustard,"Prefers cool climates and loamy soil; ideal temp: 10–25°C."
+Crop,Chickpea,"Needs well-drained loamy soil; best in cooler climates (15–20°C)."
+Crop,Lentil,"Grows in fertile loamy soil, requires 15–25°C temperature."
+Crop,Green gram (Moong),"Needs warm climate, sandy loam soil, and good sunlight (25–35°C)."
+Crop,Black gram (Urad),"Grows in moist, loamy soil and warm climate (25–30°C)."
+Crop,Peas,"Prefers well-drained loamy soil and cooler temperature (10–20°C)."
+Crop,Onion,"Needs loose, well-drained soil and moderate climate (20–25°C)."
+Crop,Garlic,"Prefers fertile loamy soil with cool growing conditions (10–20°C)."
+Crop,Potato,"Thrives in cool climate, well-drained sandy loam soil (15–20°C)."
+Crop,Brinjal (Eggplant),"Warm climate, well-drained fertile soil; temp: 25–30°C."
+Crop,Cabbage,"Cool season crop, grows in loamy soil; ideal temperature 10–20°C."
+Crop,Cauliflower,"Requires cool climate and well-drained fertile soil (15–20°C)."
+PestControl,Neem oil,Effective against aphids and caterpillars.
+PestControl,Garlic spray,Repels aphids and beetles naturally.
+Practice,Mulching,Conserves soil moisture and controls weeds.

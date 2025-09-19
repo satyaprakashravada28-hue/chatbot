@@ -1,0 +1,112 @@
+[
+    {
+        "Category":"Fertilizer",
+        "Name":"Nitrogen (N)",
+        "Use":"Promotes leafy growth and improves yield."
+    },
+    {
+        "Category":"Fertilizer",
+        "Name":"Phosphorus (P)",
+        "Use":"Strengthens roots and helps in flowering."
+    },
+    {
+        "Category":"Fertilizer",
+        "Name":"Potassium (K)",
+        "Use":"Improves disease resistance and fruit quality."
+    },
+    {
+        "Category":"Fertilizer",
+        "Name":"Urea",
+        "Use":"High source of nitrogen for fast growth."
+    },
+    {
+        "Category":"Fertilizer",
+        "Name":"DAP (Di-Ammonium Phosphate)",
+        "Use":"Good source of phosphorus and nitrogen."
+    },
+    {
+        "Category":"Fertilizer",
+        "Name":"MOP (Muriate of Potash)",
+        "Use":"Provides potassium for crop strength."
+    },
+    {
+        "Category":"Irrigation",
+        "Name":"Drip irrigation",
+        "Use":"Saves water and increases productivity."
+    },
+    {
+        "Category":"Irrigation",
+        "Name":"Sprinkler irrigation",
+        "Use":"Uniform water distribution, suitable for light soils."
+    },
+    {
+        "Category":"Irrigation",
+        "Name":"Canal irrigation",
+        "Use":"Provides water for large fields using canal systems."
+    },
+    {
+        "Category":"Irrigation",
+        "Name":"Rain-fed farming",
+        "Use":"Depends on natural rainfall, common in dry regions."
+    },
+    {
+        "Category":"Crop",
+        "Name":"Rice",
+        "Use":"Grows well in clayey soil; requires high water and warm climate (20\u201325\u00b0C, 150 cm rainfall)."
+    },
+    {
+        "Category":"Crop",
+        "Name":"Wheat",
+        "Use":"Prefers loamy soil and cooler climates (10\u201315\u00b0C)."
+    },
+    {
+        "Category":"Crop",
+        "Name":"Tomato",
+        "Use":"Needs well-drained soil, moderate watering, and sunlight."
+    },
+    {
+        "Category":"Crop",
+        "Name":"Maize",
+        "Use":"Thrives in well-drained fertile soil; requires moderate rainfall."
+    },
+    {
+        "Category":"Crop",
+        "Name":"Pulses",
+        "Use":"Improve soil fertility through nitrogen fixation."
+    },
+    {
+        "Category":"PestControl",
+        "Name":"Neem oil",
+        "Use":"Effective against aphids and caterpillars."
+    },
+    {
+        "Category":"PestControl",
+        "Name":"Garlic spray",
+        "Use":"Repels aphids and beetles naturally."
+    },
+    {
+        "Category":"PestControl",
+        "Name":"Chili extract",
+        "Use":"Controls whiteflies and caterpillars."
+    },
+    {
+        "Category":"PestControl",
+        "Name":"Marigold intercropping",
+        "Use":"Repels nematodes and pests in tomato fields."
+    },
+    {
+        "Category":"Practice",
+        "Name":"Crop rotation",
+        "Use":"Improves soil health and prevents pest buildup."
+    },
+    {
+        "Category":"Practice",
+        "Name":"Intercropping",
+        "Use":"Growing two crops together for better resource use and pest control."
+    },
+    {
+        "Category":"Practice",
+        "Name":"Mulching",
+        "Use":"Conserves soil moisture and controls weeds."
+    }
+]

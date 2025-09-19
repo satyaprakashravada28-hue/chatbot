@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AgriAssist - Smart Farmer Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Bootstrap CSS CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: url('{{ url_for("static", filename="images/image.png") }}');
+      background-size: cover;
+      color: #ffffff;
+      backdrop-filter: blur(3px);
+    }
+    h2,
+    h4 {
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    }
+    .glass-card {
+      background-color: rgba(18, 18, 18, 0.85);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      margin-bottom: 40px;
+    }
+    .chat-box {
+      height: 300px;
+      overflow-y: auto;
+      background-color: rgba(30, 30, 30, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .chat-msg {
+      margin-bottom: 10px;
+    }
+    .user {
+      color: #00ffcc;
+    }
+    .bot {
+      color: #ffa500;
+    }
+    .form-control,
+    .btn {
+      background-color: rgba(42, 42, 42, 0.85);
+      color: white;
+      border: 1px solid #555;
+    }
+    .form-control::placeholder {
+      color: #bbb;
+    }
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+    .btn-success:hover {
+      background-color: #218838;
+    }
+    .btn-primary:hover {
+      background-color: #1e6ab4;
+    }
+    hr {
+      border-top: 1px solid #666;
+    }
+    /* Language selector styling top-right */
+    #language-container {
+      position: fixed;
+      top: 10px;
+      right: 15px;
+      z-index: 2000;
+      width: 140px;
+    }
+  </style>
+</head>
+<body class="container py-5">
+  <!-- Navbar -->
+  <nav
+    class="navbar navbar-expand-lg navbar-dark bg-dark rounded-4 shadow px-2 py-2"
+  >
+    <a class="navbar-brand" href="index.html" data-key="navbar_brand">🌱 AgriAssist</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#agriNavbar"
+      aria-controls="agriNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="agriNavbar">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('instructions') }}">Instructions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('about') }}">About</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+<br>
+  <!-- Language selector top right -->
+  <div id="language-container">
+    <select
+      id="language-select"
+      class="form-select form-select-sm"
+      aria-label="Select Language"
+    >
+      <option value="en" selected>English 🇬🇧</option>
+      <option value="hi">Hindi 🇮🇳</option>
+      <option value="te">Telugu 🇮🇳</option>
+      <option value="kn">Kannada 🇮🇳</option>
+      <option value="ml">Malayalam 🇮🇳</option>
+      <option value="pa">Punjabi 🇮🇳</option>
+      <option value="gu">Gujarati 🇮🇳</option>
+      <option value="or">Odia 🇮🇳</option>
+      <option value="bn">Bengali 🇮🇳</option>
+      <option value="as">Assamese 🇮🇳</option>
+    </select>
+  </div>
+
+  <!-- Content with data-key for translation -->
+  <div class="glass-card">
+    <h2 class="text-center mb-4" data-key="welcome_message">
+      Welcome to the AI-Based Farmer Support System
+    </h2>
+    <p data-key="intro_text">
+      This AI-powered system acts as your personal digital assistant for
+      agriculture. You can ask about crops, diseases, soil conditions, and
+      modern farming techniques. Our chatbot gives instant, reliable, and
+      easy-to-follow answers. Together, let’s grow healthier crops and build a
+      stronger farming community.
+    </p>
+  </div>
+
+  <div class="glass-card">
+    <h3 class="text-center mb-4" data-key="chatbot_title">
+      🌾 AgriAssist - Smart Farmer Chatbot
+    </h3>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="input-group mb-4">
+      <select id="chat-lang-select" class="form-select w-auto me-2">
+        <option value="en-IN">English 🇮🇳</option>
+        <option value="te-IN">Telugu 🇮🇳</option>
+        <option value="hi-IN">Hindi 🇮🇳</option>
+        <option value="kn-IN">Kannada 🇮🇳</option>
+        <option value="ml-IN">Malayalam 🇮🇳</option>
+        <option value="pa-IN">Punjabi 🇮🇳</option>
+        <option value="gu-IN">Gujarati 🇮🇳</option>
+        <option value="or-IN">Odia 🇮🇳</option>
+        <option value="bn-IN">Bengali 🇮🇳</option>
+        <option value="as-IN">Assamese 🇮🇳</option>
+      </select>
+      <input
+        type="text"
+        id="user-message"
+        class="form-control"
+        placeholder="Ask me anything about farming..."
+        data-key-placeholder="chat_placeholder"
+      />
+      <button class="btn btn-success" onclick="sendMessage()" data-key="send_button">
+        Send
+      </button>
+      <button
+        class="btn btn-outline-light"
+        onclick="startListening()"
+        title="Start Voice Input"
+      >
+        🎤
+      </button>
+    </div>
+  </div>
+
+ <!-- Only showing the form part that changed -->
+<div class="glass-card">
+  <hr class="text-white" />
+  <h4 class="mb-3" data-key="crop_form_title">🌱 Crop Prediction Form</h4>
+  <form id="crop-form">
+    <div class="row mb-2">
+      <div class="col"><input type="number" class="form-control" name="N" placeholder="N" required /></div>
+      <div class="col"><input type="number" class="form-control" name="P" placeholder="P" required /></div>
+      <div class="col"><input type="number" class="form-control" name="K" placeholder="K" required /></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
+        <input type="number" step="0.1" class="form-control" name="temperature" placeholder="Temperature" required />
+      </div>
+      <div class="col">
+        <input type="number" step="0.1" class="form-control" name="humidity" placeholder="Humidity" required />
+      </div>
+      <div class="col">
+        <input type="number" step="0.1" class="form-control" name="ph" placeholder="pH" required />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
+        <input type="number" step="0.1" class="form-control" name="rainfall" placeholder="Rainfall" required />
+      </div>
+      <div class="col">
+        <select name="season" class="form-select" required>
+           <option value="">Select Season</option>
+           {% for s in encoder_options['season'] %}
+           <option value="{{ s }}">{{ s }}</option>
+           {% endfor %}
+          </select>
+      </div>
+      <div class="col">
+        <select name="district" class="form-select" required>
+          <option value="">Select District</option>
+          {% for d in encoder_options['district'] %}
+          <option value="{{ d }}">{{ d }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
+        <select name="soil_type" class="form-select" required>
+          <option value="">Select Soil Type</option>
+          {% for st in encoder_options['soil_type'] %}
+          <option value="{{ st }}">{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <input type="number" class="form-control" name="water_availability" placeholder="Water Availability" required />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
+        <select name="fertilizer_used" class="form-select" required>
+          <option value="">Select Fertilizer</option>
+          {% for f in encoder_options['fertilizer_used'] %}
+          <option value="{{ f }}">{{ f }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <input type="number" step="0.1" class="form-control" name="sunlight_hours" placeholder="Sunlight Hours" required />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" data-key="predict_button">Predict Crop</button>
+  </form>
+  <div id="prediction-result" class="mt-3 text-info fw-bold"></div>
+</div>
+
+
+  <!-- Bootstrap JS for toggler -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const translations = {
+      en: {
+            navbar_brand: "🌱 AgriAssist",
+    nav_home: "Home",
+    nav_instructions: "Instructions",
+    nav_about: "About",
+        welcome_message: "Welcome to the AI-Based Farmer Support System",
+        intro_text:
+          `This AI-powered system acts as your personal digital assistant for agriculture.
+           You can ask about crops, diseases, soil conditions, and modern farming techniques.
+           Our chatbot gives instant, reliable, and easy-to-follow answers.
+           Together, let’s grow healthier crops and build a stronger farming community.`,
+        chatbot_title: "🌾 AgriAssist - Smart Farmer Chatbot",
+        send_button: "Send",
+        crop_form_title: "🌱 Crop Prediction Form",
+        predict_button: "Predict Crop",
+        chat_placeholder: "Ask me anything about farming..."
+      },
+      hi: {
+        navbar_brand: "🌱 एग्रीअसिस्ट",
+    nav_home: "होम",
+    nav_instructions: "निर्देश",
+    nav_about: "हमारे बारे में",
+        welcome_message: "एआई-आधारित किसान सहायता प्रणाली में आपका स्वागत है",
+        intro_text:
+          `यह एआई-पावर्ड सिस्टम आपके व्यक्तिगत डिजिटल सहायक के रूप में कार्य करता है।
+           आप फसलों, बीमारियों, मिट्टी की स्थिति, और आधुनिक कृषि तकनीकों के बारे में पूछ सकते हैं।
+           हमारा चैटबॉट तुरंत, विश्वसनीय और आसानी से समझने वाले उत्तर देता है।
+           आइए साथ मिलकर बेहतर फसल उगाएं और एक मजबूत कृषि समुदाय बनाएं।`,
+        chatbot_title: "🌾 एग्रीअसिस्ट - स्मार्ट किसान चैटबॉट",
+        send_button: "भेजें",
+        crop_form_title: "🌱 फसल भविष्यवाणी फॉर्म",
+        predict_button: "फसल अनुमानित करें",
+        chat_placeholder: "कृषि के बारे में कोई भी सवाल पूछें..."
+      },
+      te: {
+            navbar_brand: "🌱 ఏగ్రిఅసిస్ట్",
+    nav_home: "హోమ్",
+    nav_instructions: "సూచనలు",
+    nav_about: "గురించి",
+        welcome_message: "ఏఐ ఆధారిత రైతు సహాయక వ్యవస్థకు స్వాగతం",
+        intro_text: `ఈ ఏఐ ఆధారిత సిస్టమ్ మీ వ్యక్తిగత డిజిటల్ అసిస్టెంట్‌గా పనిచేస్తుంది.
+          మీరు పంటలు, రోగాలు, నేల పరిస్థితులు మరియు ఆధునిక వ్యవసాయ సాంకేతికతల గురించి అడగవచ్చు.
+          మా చాట్‌బాట్ తక్షణమే, నమ్మకంగా మరియు సులభంగా అర్థమయ్యే సమాధానాలను ఇస్తుంది.
+          కలసి ఆరోగ్యకరమైన పంటలను పెంచి బలమైన వ్యవసాయ సమాజాన్ని నిర్మిద్దాం.`,
+        chatbot_title: "🌾 ఏగ్రిఅసిస్ట్ - స్మార్ట్ రైతు చాట్‌బాట్",
+        send_button: "పంపండి",
+        crop_form_title: "🌱 పంట పూర్వానుమానం ఫారం",
+        predict_button: "పంట పూర్వానుమానం చేయండి",
+        chat_placeholder: "వ్యవసాయం గురించి ఏదైనా అడగండి..."
+      },
+      kn: {
+          navbar_brand: "🌱 ಅಗ್ರಿಅಸಿಸ್ಟ್",
+  nav_home: "ಮನೆ",
+  nav_instructions: "ಸೂಚನೆಗಳು",
+  nav_about: "ಬಗ್ಗೆ",
+  welcome_message: "ಎಐ ಆಧಾರಿತ ರೈತ ಸಹಾಯಕ ವ್ಯವಸ್ಥೆಗೆ ಸ್ವಾಗತ",
+  intro_text: `ಈ ಎಐ ಆಧಾರಿತ ವ್ಯವಸ್ಥೆ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡಿಜಿಟಲ್ ಸಹಾಯಕನಂತೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ. 
+  ನೀವು ಬೆಳೆಗಳು, ರೋಗಗಳು, ಮಣ್ಣಿನ ಪರಿಸ್ಥಿತಿಗಳು ಮತ್ತು ಆಧುನಿಕ ಕೃಷಿ ತಂತ್ರಜ್ಞಾನಗಳ ಬಗ್ಗೆ ಕೇಳಬಹುದು. 
+  ನಮ್ಮ ಚಾಟ್‌ಬಾಟ್ ತಕ್ಷಣ, ವಿಶ್ವಾಸಾರ್ಹ ಮತ್ತು ಸುಲಭವಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಬಹುದಾದ ಉತ್ತರಗಳನ್ನು ನೀಡುತ್ತದೆ. 
+  ಒಟ್ಟಿಗೆ ಆರೋಗ್ಯಕರ ಬೆಳೆಯನ್ನು ಬೆಳೆಸಿ ಬಲವಾದ ಕೃಷಿ ಸಮುದಾಯವನ್ನು ನಿರ್ಮಿಸೋಣ.`,
+  chatbot_title: "🌾 ಅಗ್ರಿಅಸಿಸ್ಟ್ - ಸ್ಮಾರ್ಟ್ ರೈತ ಚಾಟ್‌ಬಾಟ್",
+  send_button: "ಕಳುಹಿಸಿ",
+  crop_form_title: "🌱 ಬೆಳೆ ಭವಿಷ್ಯವಾಣಿ ಫಾರ್ಮ್",
+  predict_button: "ಬೆಳೆ ಭವಿಷ್ಯವಾಣಿ ಮಾಡಿ",
+  chat_placeholder: "ಕೃಷಿ ಬಗ್ಗೆ ಏನಾದರೂ ಕೇಳಿ..."
+},
+
+ml: {
+      navbar_brand: "🌱 അഗ്രിഅസിസ്റ്റ്",
+  nav_home: "ഹോം",
+  nav_instructions: "നിർദ്ദേശങ്ങൾ",
+  nav_about: "കുറിച്ച്",
+  welcome_message: "എഐ അടിസ്ഥാനപ്പെടുത്തിയ കർഷക സഹായ സംവിധാനത്തിലേക്ക് സ്വാഗതം",
+  intro_text: `ഈ എഐ സംവിധാനo നിങ്ങളുടെ വ്യക്തിഗത ഡിജിറ്റൽ സഹായിയായി പ്രവർത്തിക്കുന്നു. 
+  നിങ്ങൾ വിളകൾ, രോഗങ്ങൾ, മണ്ണിന്റെ അവസ്ഥകൾ, ആധുനിക കൃഷി സാങ്കേതികവിദ്യകൾ എന്നിവയെക്കുറിച്ച് ചോദിക്കാം. 
+  ഞങ്ങളുടെ ചാറ്റ്ബോട്ട് ഉടൻ, വിശ്വാസ്യതയോടെ, എളുപ്പത്തിൽ മനസ്സിലാക്കാവുന്ന ഉത്തരങ്ങൾ നൽകും. 
+  ഒരുമിച്ച് ആരോഗ്യകരമായ വിളകൾ വളർത്തി ശക്തമായ കൃഷി സമൂഹം ഉണ്ടാക്കാം.`,
+  chatbot_title: "🌾 അഗ്രിഅസിസ്റ്റ് - സ്മാർട്ട് കർഷക ചാറ്റ്ബോട്ട്",
+  send_button: "അയയ്ക്കുക",
+  crop_form_title: "🌱 വിള പ്രവചന ഫോം",
+  predict_button: "വിള പ്രവചിക്കുക",
+  chat_placeholder: "കൃഷിയെക്കുറിച്ച് എന്തെങ്കിലും ചോദിക്കൂ..."
+},
+
+pa: {
+      navbar_brand: "🌱 ਐਗਰੀਅਸਿਸਟ",
+  nav_home: "ਘਰ",
+  nav_instructions: "ਹਦਾਇਤਾਂ",
+  nav_about: "ਬਾਰੇ",
+  welcome_message: "ਏਆਈ ਅਧਾਰਿਤ ਕਿਸਾਨ ਸਹਾਇਤਾ ਪ੍ਰਣਾਲੀ ਵਿੱਚ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ",
+  intro_text: `ਇਹ ਏਆਈ ਪ੍ਰਣਾਲੀ ਤੁਹਾਡੇ ਨਿੱਜੀ ਡਿਜ਼ਿਟਲ ਸਹਾਇਕ ਵਜੋਂ ਕੰਮ ਕਰਦੀ ਹੈ। 
+  ਤੁਸੀਂ ਫਸਲਾਂ, ਬਿਮਾਰੀਆਂ, ਮਿੱਟੀ ਦੀਆਂ ਸਥਿਤੀਆਂ ਅਤੇ ਆਧੁਨਿਕ ਖੇਤੀ ਤਕਨਾਲੋਜੀਆਂ ਬਾਰੇ ਪੁੱਛ ਸਕਦੇ ਹੋ। 
+  ਸਾਡਾ ਚੈਟਬੌਟ ਤੁਰੰਤ, ਭਰੋਸੇਮੰਦ ਅਤੇ ਆਸਾਨ ਜਵਾਬ ਦਿੰਦਾ ਹੈ। 
+  ਆਓ ਇਕੱਠੇ ਹੋ ਕੇ ਸਿਹਤਮੰਦ ਫਸਲਾਂ ਉਗਾਈਏ ਅਤੇ ਮਜ਼ਬੂਤ ਖੇਤੀਬਾੜੀ ਕਮਿਊਨਿਟੀ ਬਣਾਈਏ।`,
+  chatbot_title: "🌾 ਐਗਰੀਅਸਿਸਟ - ਸਮਾਰਟ ਕਿਸਾਨ ਚੈਟਬੌਟ",
+  send_button: "ਭੇਜੋ",
+  crop_form_title: "🌱 ਫਸਲ ਅਨੁਮਾਨ ਫਾਰਮ",
+  predict_button: "ਫਸਲ ਅਨੁਮਾਨ ਲਗਾਓ",
+  chat_placeholder: "ਖੇਤੀ ਬਾਰੇ ਕੁਝ ਵੀ ਪੁੱਛੋ..."
+},
+
+gu: {
+      navbar_brand: "🌱 એગ્રીઅસિસ્ટ",
+  nav_home: "હોમ",
+  nav_instructions: "સૂચનાઓ",
+  nav_about: "વિશે",
+  welcome_message: "એઆઈ આધારિત ખેડૂત સહાય સિસ્ટમમાં આપનું સ્વાગત છે",
+  intro_text: `આ એઆઈ આધારિત સિસ્ટમ તમારા વ્યક્તિગત ડિજિટલ સહાયક તરીકે કાર્ય કરે છે. 
+  તમે પાકો, રોગો, જમીનની પરિસ્થિતિ અને આધુનિક ખેતી તકનીકો વિશે પૂછી શકો છો. 
+  અમારો ચેટબોટ તાત્કાલિક, વિશ્વસનીય અને સરળતાથી સમજાય તેવા જવાબ આપે છે. 
+  ચાલો મળીને તંદુરસ્ત પાક ઉગાડીએ અને મજબૂત કૃષિ સમુદાય બનાવીએ.`,
+  chatbot_title: "🌾 એગ્રીઅસિસ્ટ - સ્માર્ટ ખેડૂત ચેટબોટ",
+  send_button: "મોકલો",
+  crop_form_title: "🌱 પાક આગાહી ફોર્મ",
+  predict_button: "પાકની આગાહી કરો",
+  chat_placeholder: "ખેતી વિશે કઈપણ પૂછો..."
+},
+
+or: {
+    navbar_brand: "🌱 ଏଗ୍ରିଅସିଷ୍ଟ",
+  nav_home: "ମୁଖ୍ୟ",
+  nav_instructions: "ନିର୍ଦ୍ଦେଶ",
+  nav_about: "ବିଷୟରେ",  
+  welcome_message: "ଏଆଇ ଆଧାରିତ କୃଷକ ସହାୟତା ପ୍ରଣାଳୀକୁ ସ୍ୱାଗତ",
+  intro_text: `ଏହି ଏଆଇ ପ୍ରଣାଳୀ ଆପଣଙ୍କ ବ୍ୟକ୍ତିଗତ ଡିଜିଟାଲ ସହାୟକ ଭାବେ କାର୍ଯ୍ୟ କରେ। 
+  ଆପଣ ଚାଷ, ରୋଗ, ମାଟିର ପରିସ୍ଥିତି ଏବଂ ଆଧୁନିକ କୃଷି ପ୍ରଯୁକ୍ତି ବିଷୟରେ ପଚାରିପାରିବେ। 
+  ଆମର ଚାଟବଟ୍ ତୁରନ୍ତ, ବିଶ୍ୱସନୀୟ ଏବଂ ସହଜରେ ବୁ understandedable answer. 
+  ଚଳ, ଆମେ ସୁସ୍ଥ ପକ୍ଷୀଗୁଡିକୁ ବୃଦ୍ଧି କରିବାକୁ ଏବଂ ଦୃ strong agricultural community.`,
+  chatbot_title: "🌾 ଏଗ୍ରିଅସିଷ୍ଟ - ସ୍ମାର୍ଟ କୃଷକ ଚାଟବଟ୍",
+  send_button: "ପଠାନ୍ତୁ",
+  crop_form_title: "🌱 ଚାଷ ପୂର୍ବାନୁମାନ ଫର୍ମ",
+  predict_button: "ଚାଷ ପୂର୍ବାନୁମାନ କରନ୍ତୁ",
+  chat_placeholder: "କୃଷି ବିଷୟରେ କିଛି ପଚାରନ୍ତୁ..."
+},
+
+bn: {
+      navbar_brand: "🌱 এগ্রিঅ্যাসিস্ট",
+  nav_home: "হোম",
+  nav_instructions: "নির্দেশাবলী",
+  nav_about: "সম্পর্কে",
+  welcome_message: "এআই ভিত্তিক কৃষক সহায়তা সিস্টেমে স্বাগতম",
+  intro_text: `এই এআই-ভিত্তিক সিস্টেমটি আপনার ব্যক্তিগত ডিজিটাল সহকারী হিসেবে কাজ করে। 
+  আপনি ফসল, রোগ, মাটির অবস্থা এবং আধুনিক কৃষি প্রযুক্তি সম্পর্কে জানতে পারেন। 
+  আমাদের চ্যাটবট দ্রুত, নির্ভরযোগ্য এবং সহজে বোঝা যায় এমন উত্তর দেয়। 
+  চলুন একসাথে স্বাস্থ্যকর ফসল উৎপাদন করি এবং একটি শক্তিশালী কৃষি সম্প্রদায় গড়ে তুলি।`,
+  chatbot_title: "🌾 এগ্রিঅ্যাসিস্ট - স্মার্ট কৃষক চ্যাটবট",
+  send_button: "পাঠান",
+  crop_form_title: "🌱 ফসল পূর্বাভাস ফর্ম",
+  predict_button: "ফসল পূর্বাভাস দিন",
+  chat_placeholder: "কৃষি সম্পর্কে কিছু জিজ্ঞাসা করুন..."
+},
+
+as: {
+      navbar_brand: "🌱 এগ্ৰিঅছিষ্ট",
+  nav_home: "হোম",
+  nav_instructions: "নির্দেশনা",
+  nav_about: "বিষয়ে",
+  welcome_message: "এআই-ভিত্তিক কৃষক সহায়তা ব্যৱস্থালৈ স্বাগতম",
+  intro_text: `এই এআই-ভিত্তিক ব্যৱস্থা আপোনাৰ ব্যক্তিগত ডিজিটেল সহায়ক হিচাপে কাম কৰে। 
+  আপুনি শস্য, ৰোগ, মাটিৰ অৱস্থা আৰু আধুনিক কৃষি প্ৰযুক্তি সম্পৰ্কে সোধিব পাৰে। 
+  আমাৰ চেটবট তৎক্ষণাত, বিশ্বাসযোগ্য আৰু সহজে বুজিব পৰা উত্তৰ দিয়ে। 
+  আহক, একেলগে সুস্বাস্থ্যকর শস্য উৎপাদন কৰি শক্তিশালী কৃষি সমাজ গঠন কৰোঁ।`,
+  chatbot_title: "🌾 এগ্ৰিঅছিষ্ট - স্মাৰ্ট কৃষক চেটবট",
+  send_button: "পঠিয়াওক",
+  crop_form_title: "🌱 শস্য পূৰ্বাভাস ফৰ্ম",
+  predict_button: "শস্য পূৰ্বাভাস কৰক",
+  chat_placeholder: "কৃষি সম্পৰ্কে যিকোনো প্ৰশ্ন সোধক..."
+},
+    }
+    function translatePage(lang) {
+      document.querySelectorAll("[data-key]").forEach((el) => {
+        const key = el.getAttribute("data-key");
+        if (translations[lang] && translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+      document.querySelectorAll("[data-key-placeholder]").forEach((el) => {
+        const key = el.getAttribute("data-key-placeholder");
+        if (translations[lang] && translations[lang][key]) {
+          el.placeholder = translations[lang][key];
+        }
+      });
+    }
+
+    document
+      .getElementById("language-select")
+      .addEventListener("change", function () {
+        translatePage(this.value);
+      });
+
+    translatePage("en");
+
+    async function sendMessage() {
+      const userInput = document.getElementById("user-message").value;
+      if (!userInput.trim()) return;
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML += `<div class="chat-msg user">🧑‍🌾 You: ${userInput}</div>`;
+      document.getElementById("user-message").value = "";
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userInput }),
+        });
+        const data = await response.json();
+        const botReply = data.response || "No response";
+        chatBox.innerHTML += `<div class="chat-msg bot">🤖 Bot: ${botReply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        speak(botReply);
+      } catch (err) {
+        chatBox.innerHTML += `<div class="chat-msg bot">🤖 Bot: Error occurred. Try again.</div>`;
+      }
+    }
+    function startListening() {
+      const lang = document.getElementById("chat-lang-select").value;
+      const recognition =
+        new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = lang;
+      recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("user-message").value = transcript;
+        sendMessage();
+      };
+      recognition.onerror = function (event) {
+        alert("Voice recognition error: " + event.error);
+      };
+      recognition.start();
+    }
+    function speak(text) {
+  const selectedLang = document.getElementById("chat-lang-select").value;
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = selectedLang;
+
+  // Try to select a matching voice if available
+  const voices = window.speechSynthesis.getVoices();
+  const matchingVoice = voices.find(voice => voice.lang === selectedLang);
+
+  if (matchingVoice) {
+    utterance.voice = matchingVoice;
+  } else {
+    console.warn("🔈 No exact matching voice found for", selectedLang);
+  }
+
+  window.speechSynthesis.speak(utterance);
+}
+
+  </script>
+  <script>
+  // Predict Crop using fetch (without reloading)
+  document.getElementById("crop-form").addEventListener("submit", async function (e) {
+    e.preventDefault(); // Stop form from reloading
+
+    const formData = new FormData(this);
+    const jsonData = {};
+
+    for (const [key, value] of formData.entries()) {
+      jsonData[key] = value;
+    }
+
+    try {
+      const response = await fetch("/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsonData)
+      });
+
+      const result = await response.json();
+
+      if (result.predicted_crop) {
+        document.getElementById("prediction-result").innerText = "🌾 Predicted Crop: " + result.predicted_crop;
+      } else if (result.error) {
+        document.getElementById("prediction-result").innerText = "❌ Error: " + result.error;
+      } else {
+        document.getElementById("prediction-result").innerText = "⚠️ Unexpected response.";
+      }
+
+    } catch (error) {
+      document.getElementById("prediction-result").innerText = "❌ Request failed: " + error;
+    }
+  });
+</script>
+
+</body>
+</html>
